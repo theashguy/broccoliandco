@@ -32,3 +32,4 @@ yarn dev
 - [ ] Build UI
 - [ ] Build State
 - [ ] Accessibility
+- [ ] Play with Animations
