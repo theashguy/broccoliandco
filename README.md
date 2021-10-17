@@ -29,6 +29,6 @@ yarn dev
 ## TODO
 
 - [x] Setup Project
-- [-] Build UI
+- [ ] Build UI
 - [ ] Build State
 - [ ] Accessibility
