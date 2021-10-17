@@ -1,5 +1,7 @@
 import React from "react";
 
+import GithubCorner from "react-github-corner";
+
 import S from "./Header.styles";
 
 const Header = ({ children }) => {
@@ -12,7 +14,11 @@ const Header = ({ children }) => {
         </span>
       </S.Logo>
 
-      {/* {children} */}
+      <GithubCorner
+        href={"https://github.com/theashguy/broccoliandco"}
+        bannerColor={"#ffa500"}
+        size={60}
+      />
     </S.Container>
   );
 };
