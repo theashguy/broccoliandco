@@ -180,7 +180,6 @@ const useFormState = (): [
 
     // Handle state where we're transitioning to Pending
     else if (formState == "Pending") {
-      // TODO: Transition to single state...
       setName("");
       setEmail("");
       setConfirm("");

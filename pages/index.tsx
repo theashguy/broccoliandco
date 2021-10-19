@@ -23,6 +23,19 @@ const Home = () => {
     }
   }, [formState]);
 
+  // Handle escape
+  useEffect(() => {
+    document.addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape") {
+          setShowModal(false);
+        }
+      },
+      false
+    );
+  }, []);
+
   return (
     <Stage>
       <Header>Something</Header>
