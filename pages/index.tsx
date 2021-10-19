@@ -45,7 +45,7 @@ const Home = () => {
 
   return (
     <Stage>
-      <Header>Something</Header>
+      <Header />
       <Hero>
         <h1>A better way to enjoy every day.</h1>
         <h2>Be the first to know when we launch.</h2>

@@ -10,7 +10,7 @@ type ModalProps = {
 const Modal = ({ children, onDismiss }) => {
   return (
     <S.Mask>
-      <S.Clear onClick={() => onDismiss()} />
+      <S.Clear data-testid="mask" onClick={() => onDismiss()} />
       <S.Panel>{children}</S.Panel>
     </S.Mask>
   );

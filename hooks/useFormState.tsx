@@ -1,12 +1,19 @@
 import { logDOM } from "@testing-library/dom";
 import React, { useEffect, useState } from "react";
 
+const ENDPOINT =
+  "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth";
+
 /**
  * @name FormState
  * @description Represents the differt states a form can be in.
  */
 type FormState = "Pending" | "Submitted" | "Loading" | "Error" | "Reset";
 
+/**
+ * @name FormData
+ * @description Represents the shape of the state object holding the form data.
+ */
 type FormData = {
   name: string;
   nameError?: string;
@@ -46,7 +53,7 @@ const hasValidName = (field: string): boolean => {
  */
 
 const hasValidEmail = (field: string): boolean => {
-  return field.indexOf("@") > -1;
+  return field.indexOf("@") > -1 && field.length >= 3;
 };
 
 /**
@@ -106,7 +113,7 @@ const useFormState = (): [
 
   // Validate emails
   formData.confirmError =
-    formData.email != formData.confirm
+    formData.email !== formData.confirm
       ? "Email and confirmation fields must match."
       : undefined;
 
@@ -140,7 +147,17 @@ const useFormState = (): [
 
   // Sets the form state to loading causing a fetch on next tick
   const submitForm = () => {
-    setFormState("Loading");
+    console.log(
+      "Are we submittable",
+      formData.submittable,
+      formData.confirm,
+      formData.confirmError,
+      formData.emailError,
+      formData.nameError
+    );
+    if (formData.submittable) {
+      setFormState("Loading");
+    }
   };
 
   // Perform fetch if status at 'Loading', and change state as a result
@@ -152,27 +169,24 @@ const useFormState = (): [
       // close to the upper threshold of what we can achieve in a single render
       // and any changes that increase complexity should consider refactoring.
 
-      fetch(
-        "https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            name: name,
-            email: email,
-          }),
-        }
-      )
+      fetch(ENDPOINT, {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+        }),
+      })
         .then((response) => {
           if (response.status != 200) {
             throw response.statusText || "Error submitting form";
           }
 
-          console.log("Response is", response);
           response.json();
         })
         .then((json) => setFormState("Submitted"))
         .catch((e) => {
           console.error("Error submitting form:", e);
+
           setSubmitError(e);
           setFormState("Error");
         });
@@ -207,4 +221,71 @@ const useFormState = (): [
   ];
 };
 
+/**
+ * @name Scaffold
+ * @description Test scaffold for exercising the useFormState hook in a sane and
+ * thorough way. If updating this scaffold be sure to only take into account the
+ * shape of the returned data from the function, rather than the intent of the
+ * UI that will utilise it.
+ */
+const Scaffold = () => {
+  let [targetField, setTargetField] = useState(""); // Allow testing custom field names
+  let [setField, submitForm, resetForm, formState, formData] = useFormState();
+
+  return (
+    <div>
+      <dl data-testid="vars">
+        <dt>State</dt>
+        <dd data-testid="fieldState">{formState}</dd>
+        <dt>Name</dt>
+        <dd data-testid="fieldName">{formData.name}</dd>
+        <dt>Name Error</dt>
+        <dd data-testid="fieldNameError">{formData.nameError}</dd>
+        <dt>Email</dt>
+        <dd data-testid="fieldEmail">{formData.email}</dd>
+        <dt>Email Error</dt>
+        <dd data-testid="fieldEmailError">{formData.emailError}</dd>
+        <dt>Confirm</dt>
+        <dd data-testid="fieldConfirm">{formData.confirm}</dd>
+        <dt>Confirm Error</dt>
+        <dd data-testid="fieldConfirmError">{formData.confirmError}</dd>
+        <dt>Submittable</dt>
+        <dd data-testid="fieldSubmittable">
+          {formData.submittable ? "true" : "false"}
+        </dd>
+        <dt>Submit Error</dt>
+        <dd data-testid="fieldSubmitError">{formData.submitError}</dd>
+      </dl>
+
+      <div data-testid="entry">
+        <input
+          data-testid="targetField"
+          onChange={(e) => setTargetField(e.target.value)}
+        />
+        <input
+          data-testid="fieldValue"
+          onChange={(e) => setField(targetField, e.target.value)}
+        />
+      </div>
+
+      <div data-testid="actions">
+        <button data-testid="submit" onClick={() => submitForm()}>
+          Submit
+        </button>
+        <button data-testid="reset" onClick={() => resetForm()}>
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default useFormState;
+export {
+  ENDPOINT,
+  Scaffold,
+  notEmpty,
+  hasValidName,
+  hasValidEmail,
+  isSubmittable,
+};

@@ -4,7 +4,7 @@ import GithubCorner from "react-github-corner";
 
 import S from "./Header.styles";
 
-const Header = ({ children }) => {
+const Header = () => {
   return (
     <S.Container>
       <S.Logo>
