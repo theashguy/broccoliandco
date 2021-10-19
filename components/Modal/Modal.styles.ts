@@ -27,6 +27,7 @@ const Panel = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 18rem;
 
   margin-left: -9.5rem;
   margin-top: -14rem;
@@ -39,6 +40,19 @@ const Panel = styled.div`
   transition: width 2s;
 
   z-index: ${({ theme }) => theme.layers.mask + 2};
+
+  h2 {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+    margin: 0;
+  }
 `;
 
 export default { Mask, Panel, Clear };

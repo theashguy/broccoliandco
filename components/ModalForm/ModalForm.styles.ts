@@ -5,13 +5,6 @@ const Container = styled.div`
   flex-direction: column;
   padding: ${({ theme }) => theme.padding.small};
 
-  h2 {
-    margin-top: 0;
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-  }
-
   label {
     display: flex;
     flex-direction: column;
