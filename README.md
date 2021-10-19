@@ -37,5 +37,5 @@ And to deploy a new version push to the master branch, or raise a PR (in which c
 - Styled Components
 - Jest & React Testing Library
 - Eslint & Prettier
-- Github / Actions
+- Github
 - Vercel
