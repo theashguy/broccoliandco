@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import Button from "components/Button";
+import ButtonGroup from "components/ButtonGroup";
+import ErrorNotation from "components/ErrorNotation";
+import Footer from "components/Footer";
 import Header from "components/Header";
 import Hero from "components/Hero";
-import Footer from "components/Footer";
-import Stage from "components/Stage";
-import Button from "components/Button";
 import Modal from "components/Modal";
 import ModalForm from "components/ModalForm";
+import Stage from "components/Stage";
+
+import useFormState from "hooks/useFormState";
 
 const Home = () => {
   let [showModal, setShowModal] = useState(false);
+  let [setField, submitForm, resetForm, formState, formData] = useFormState();
+
+  // Close modal when we transition back into a pending state
+  useEffect(() => {
+    if (formState == "Reset") {
+      setShowModal(false);
+    }
+  }, [formState]);
 
   return (
     <Stage>
@@ -29,27 +41,83 @@ const Home = () => {
       <Footer />
 
       {showModal ? (
-        <Modal onDismiss={() => setShowModal(false)}>
-          <ModalForm name={"Request an Invite"}>
-            <label>
-              <span>Full Name</span>
-              <input name="name" autoFocus={true} />
-            </label>
+        <Modal onDismiss={() => resetForm()}>
+          {formState === "Submitted" ? (
+            <div>
+              <h2>All done!</h2>
+              <p>
+                You will be sent an invite to register for Broccoli & Co after
+                we launch.
+              </p>
+              <Button onClick={() => resetForm()}>Done</Button>
+            </div>
+          ) : null}
 
-            <label>
-              <span>Email</span>
-              <input name="email" />
-            </label>
+          {formState !== "Submitted" ? (
+            <ModalForm name={"Request an Invite"}>
+              <label>
+                <span>Full Name</span>
+                <input
+                  name="name"
+                  autoFocus={true}
+                  value={formData.name}
+                  disabled={formState === "Loading"}
+                  onChange={(e) => setField("name", e.target.value)}
+                />
+                {formData.nameError ? (
+                  <ErrorNotation>{formData.nameError}</ErrorNotation>
+                ) : null}
+              </label>
 
-            <label>
-              <span>Confirm Email</span>
-              <input name="confirm_email" />
-            </label>
+              <label>
+                <span>Email</span>
+                <input
+                  name="email"
+                  value={formData.email}
+                  disabled={formState === "Loading"}
+                  onChange={(e) => setField("email", e.target.value)}
+                />
+                {formData.emailError ? (
+                  <ErrorNotation>{formData.emailError}</ErrorNotation>
+                ) : null}
+              </label>
 
-            <Button working={false} onClick={() => setShowModal(true)}>
-              Send Request
-            </Button>
-          </ModalForm>
+              <label>
+                <span>Confirm Email</span>
+                <input
+                  name="confirm_email"
+                  value={formData.confirm}
+                  disabled={formState === "Loading"}
+                  onChange={(e) => setField("confirm", e.target.value)}
+                />
+                {formData.confirmError ? (
+                  <ErrorNotation>{formData.confirmError}</ErrorNotation>
+                ) : null}
+              </label>
+
+              {formState !== "Error" ? (
+                <Button
+                  disabled={!formData.submittable}
+                  working={formState === "Loading"}
+                  onClick={() => submitForm()}
+                >
+                  Send Request
+                </Button>
+              ) : null}
+
+              {formState === "Error" ? (
+                <>
+                  <ErrorNotation>
+                    Error submitting invite request...
+                  </ErrorNotation>
+                  <ButtonGroup>
+                    <Button onClick={() => submitForm()}>Retry</Button>
+                    <Button onClick={() => resetForm()}>Cancel</Button>
+                  </ButtonGroup>
+                </>
+              ) : null}
+            </ModalForm>
+          ) : null}
         </Modal>
       ) : null}
     </Stage>

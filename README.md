@@ -26,7 +26,11 @@ yarn dev
 - Github / Actions
 - Vercel
 
-## TODO
+## Thoughts
+
+- I didn't go nuts with responsiveness in here because the mocked up design seems to lend itself to working fine across even super small screens.
+
+## Todo
 
 - [x] Setup Project
 - [ ] Build UI

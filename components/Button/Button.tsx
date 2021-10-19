@@ -5,15 +5,22 @@ import Spinner from "components/Spinner";
 import S from "./Button.styles";
 
 type ButtonProps = {
-  working: boolean;
   children: React.ReactNode;
   onClick: Function;
-  autoFocus: boolean;
+  autoFocus?: boolean;
+  disabled?: boolean;
+  working?: boolean;
 };
 
-const Button = ({ working, children, onClick, autoFocus }: ButtonProps) => {
+const Button = ({
+  children,
+  onClick,
+  autoFocus,
+  disabled,
+  working,
+}: ButtonProps) => {
   return (
-    <S.Button onClick={onClick} autoFocus={autoFocus}>
+    <S.Button onClick={onClick} autoFocus={autoFocus} disabled={disabled}>
       {working ? <Spinner /> : null}
       {children}
     </S.Button>
