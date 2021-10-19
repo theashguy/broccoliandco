@@ -23,7 +23,7 @@ const Home = () => {
     }
   }, [formState]);
 
-  // Handle escape
+  // Handle escape keypress
   useEffect(() => {
     document.addEventListener(
       "keydown",
@@ -35,6 +35,13 @@ const Home = () => {
       false
     );
   }, []);
+
+  // Handle enter keypress
+  const onEnter = (key) => {
+    if (key === "Enter" && formData.submittable) {
+      submitForm();
+    }
+  };
 
   return (
     <Stage>
@@ -62,7 +69,9 @@ const Home = () => {
                 You will be sent an invite to register for Broccoli & Co after
                 we launch.
               </p>
-              <Button onClick={() => resetForm()}>Done</Button>
+              <Button onClick={() => resetForm()} autoFocus={true}>
+                Done
+              </Button>
             </div>
           ) : null}
 
@@ -76,6 +85,7 @@ const Home = () => {
                   value={formData.name}
                   disabled={formState === "Loading"}
                   onChange={(e) => setField("name", e.target.value)}
+                  onKeyPress={(e) => onEnter(e.key)}
                 />
                 {formData.nameError ? (
                   <ErrorNotation>{formData.nameError}</ErrorNotation>
@@ -89,6 +99,7 @@ const Home = () => {
                   value={formData.email}
                   disabled={formState === "Loading"}
                   onChange={(e) => setField("email", e.target.value)}
+                  onKeyPress={(e) => onEnter(e.key)}
                 />
                 {formData.emailError ? (
                   <ErrorNotation>{formData.emailError}</ErrorNotation>
@@ -102,6 +113,7 @@ const Home = () => {
                   value={formData.confirm}
                   disabled={formState === "Loading"}
                   onChange={(e) => setField("confirm", e.target.value)}
+                  onKeyPress={(e) => onEnter(e.key)}
                 />
                 {formData.confirmError ? (
                   <ErrorNotation>{formData.confirmError}</ErrorNotation>
@@ -124,7 +136,9 @@ const Home = () => {
                     Error submitting invite request...
                   </ErrorNotation>
                   <ButtonGroup>
-                    <Button onClick={() => submitForm()}>Retry</Button>
+                    <Button onClick={() => submitForm()} autoFocus={true}>
+                      Retry
+                    </Button>
                     <Button onClick={() => resetForm()}>Cancel</Button>
                   </ButtonGroup>
                 </>
