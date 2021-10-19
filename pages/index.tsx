@@ -122,7 +122,7 @@ const Home = () => {
 
               {formState !== "Error" ? (
                 <Button
-                  disabled={!formData.submittable}
+                  disabled={!formData.submittable || formState === "Loading"}
                   working={formState === "Loading"}
                   onClick={() => submitForm()}
                 >

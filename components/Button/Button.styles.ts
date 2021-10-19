@@ -17,6 +17,10 @@ const Button = styled.button`
   margin: 0 auto;
   margin-top: 2rem;
   font-size: 1.1rem;
+
+  &:disabled {
+    background: lightgrey;
+  }
 `;
 
 export default { Button };
