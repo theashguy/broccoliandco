@@ -6,15 +6,29 @@ Broccoli and Co is a new invite-only Broccoli themed software developer coworkin
 
 This repo contains the holding page for the future website that (for the time being) allows the public to submit their details for a possible invite during the upcoming "Broccolottery" event.
 
+The website can be viewed at its staging location at https://broccoliandco.vercel.app/
+
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then launch the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
+
+To run the tests (this will auto-rerun tests that are changed):
+
+```bash
+npm run test
+```
+
+And to deploy a new version push to the master branch, or raise a PR (in which case you'll get a nice test URL generated for you by Vercel).
 
 ## Technologies Used
 
@@ -25,15 +39,3 @@ yarn dev
 - Eslint & Prettier
 - Github / Actions
 - Vercel
-
-## Thoughts
-
-- I didn't go nuts with responsiveness in here because the mocked up design seems to lend itself to working fine across even super small screens.
-
-## Todo
-
-- [x] Setup Project
-- [ ] Build UI
-- [ ] Build State
-- [ ] Accessibility
-- [ ] Play with Animations
